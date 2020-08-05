@@ -63,7 +63,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CameraController.cs" />
     <Compile Include="Assets\CharController.cs" />
+    <Compile Include="Assets\GetInDoor.cs" />
     <Compile Include="Assets\LadderController.cs" />
     <None Include="Assets\Сyber samurai\Standard_Two_Sided.shader" />
     <Reference Include="Unity.Timeline.Editor">
