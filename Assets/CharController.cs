@@ -30,9 +30,12 @@ public class CharController : MonoBehaviour
     public Transform camerah2Zero;
     Animator anim;
 
+    const string WALK_ANIM = "isWalking";
+    const string RUN_ANIM = "isRunning";
+
     void Start()
     {
-
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -40,12 +43,12 @@ public class CharController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             speed = speedRun;
-            anim.SetBool("run", true);
+            anim.SetBool(RUN_ANIM, true);
         }
         else
         {
             speed = speedWalk;
-            anim.SetBool("walk", true);
+            anim.SetBool(RUN_ANIM, false);
         }
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
@@ -69,6 +72,7 @@ public class CharController : MonoBehaviour
             Cursor.visible = true;
             HeroMoveNormal();
             if (Input.GetAxis("Horizontal") != 0 || (Input.GetAxis("Vertical") != 0)) CameraBack();
+
         }
     }
 
@@ -76,6 +80,8 @@ public class CharController : MonoBehaviour
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
+
+        WalkHandler(h, v);
 
         if ((v > 0) && (h > 0)) move = transform.forward + transform.right;
         else if ((v > 0) && (h < 0)) move = transform.forward + transform.right * -1f;
@@ -107,8 +113,7 @@ public class CharController : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        anim.SetFloat("v", v);
-        anim.SetFloat("h", h);
+        WalkHandler(h, v);
 
         if (v > 0) move = transform.forward;
         else if (v < 0) move = transform.forward * -1.0f;
@@ -123,6 +128,13 @@ public class CharController : MonoBehaviour
 
         rigidbody.MovePosition(transform.localPosition + move * speed * Time.deltaTime);
     }
+
+    private void WalkHandler(float h, float v)
+    {
+        if (h > 0 || v > 0) anim.SetBool(WALK_ANIM, true);
+        else anim.SetBool(WALK_ANIM, false);
+    }
+
     private void MoveCamera()
     {
         Cursor.visible = false;
